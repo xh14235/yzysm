@@ -55,7 +55,8 @@ tfoot,
 thead,
 tr,
 th,
-td {
+td,
+input {
     margin: 0;
     padding: 0;
     border: 0;
@@ -86,7 +87,7 @@ summary {
 html {
     font-size: 62.5%;
     color: #666;
-    font-family: Microsoft Yahei, Helvetica Neue, Helvetica, STHeiTi, Arial, sans-serif;
+    font-family: PingFangSC-Regular, Microsoft Yahei, Helvetica Neue, Helvetica, STHeiTi, Arial, sans-serif;
     height: 100%;
 }
 
@@ -177,28 +178,46 @@ textarea::-webkit-input-placeholder {
 }
 
 /* 手写功用样式 */
-.common-wrapper{
+.common-wrapper {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
-.common-page-title{
+
+.common-box{
+    width: 96%;
+    margin: 0 auto 1vh auto;
+    background: #fff;
+    box-shadow: 0px 3px 7px 0px rgba(222, 222, 222, 0.35);
+    border-radius: 5px;
+    padding: 2.4vw
+}
+
+.common-page-title {
     width: 100%;
     text-align: center;
-    height: 5vh;
-    line-height: 5vh;
+    height: 7.5vh;
+    line-height: 7.5vh;
     font-size: 1.8rem;
     font-weight: 600;
-    background: #ddd;
+    background-image: linear-gradient(to right, #44EEE0, #6379EC);
+    color: #fff;
 }
-.common-page-main{
+
+.common-page-main {
     flex: auto;
     width: 100%;
+    background: #F5F6FB;
 }
-.common-page-bottom{
+
+.common-page-bottom {
     width: 100%;
-    height: 5vh;
-    background: #ddd;
+    height: 7.5vh;
+    background: #fff;
+}
+
+.common-echarts-box{
+    width: 100%;
 }

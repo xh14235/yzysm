@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import store from "../store";
 
 Vue.use(Router);
 
@@ -16,24 +17,36 @@ const routes = [
   {
     path: "/map",
     name: "Map",
+    meta: {
+      auth: true
+    },
     component: () =>
       import(/* webpackChunkName: "Map" */ "../views/map/Map.vue")
   },
   {
     path: "/energy",
     name: "Energy",
+    meta: {
+      auth: true
+    },
     component: () =>
       import(/* webpackChunkName: "Energy" */ "../views/energy/Energy.vue")
   },
   {
     path: "/monitor",
     name: "Monitor",
+    meta: {
+      auth: true
+    },
     component: () =>
       import(/* webpackChunkName: "Monitor" */ "../views/monitor/Monitor.vue")
   },
   {
     path: "/environment",
     name: "Environment",
+    meta: {
+      auth: true
+    },
     component: () =>
       import(
         /* webpackChunkName: "Environment" */
@@ -43,5 +56,18 @@ const routes = [
 ];
 
 const router = new Router({ routes });
+
+router.beforeEach((to, from, next) => {
+  const token = store.state.token;
+  if (to.meta.auth) {
+    if (token) {
+      next();
+    } else {
+      next("/");
+    }
+  } else {
+    next();
+  }
+});
 
 export default router;

@@ -1,16 +1,21 @@
 <template>
-  <div class="map-wrapper">
-    111
-    <Tabbar>1111</Tabbar>
+  <div class="common-wrapper map-wrapper">
+    <div class="common-page-title">地图</div>
+    <div class="common-page-main">
+      <MapTest></MapTest>
+    </div>
+    <div class="common-page-bottom">
+      <Tabbar></Tabbar>
+    </div>
   </div>
 </template>
 
 <script>
-import Tabbar from "@/components/common/Tabbar";
 export default {
   name: "Map",
   components: {
-    Tabbar
+    Tabbar: () => import("@/components/common/Tabbar"),
+    MapTest: () => import("@/components/three/MapTest")
   }
 };
 </script>
