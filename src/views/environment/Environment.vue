@@ -1,7 +1,7 @@
 <template>
   <div class="common-wrapper map-wrapper">
     <div class="common-page-title">环境</div>
-    <div class="common-page-main">
+    <div class="common-page-main" :class="{ isSafari: isSafari }">
       <div class="weather-wrapper">
         <div class="today-weather">
           <img :src="icon" alt="" class="today-icon" />
@@ -126,7 +126,8 @@ export default {
       green: state => state.color.green,
       yellow: state => state.color.yellow,
       red: state => state.color.red,
-      mainfont: state => state.color.mainfont
+      mainfont: state => state.color.mainfont,
+      isSafari: state => state.isSafari
     }),
     color() {
       if (this.pm25 < 50) {
@@ -210,6 +211,8 @@ export default {
       let date = new Date();
       let hour = date.getHours();
       let minute = date.getMinutes();
+      hour = hour < 10 ? "0" + hour : hour;
+      minute = minute < 10 ? "0" + minute : minute;
       this.updateTime = hour + ":" + minute;
     },
     getWaterInfo() {
@@ -274,10 +277,10 @@ export default {
 <style lang="stylus" scoped>
 @import "~@/assets/css/common.styl"
 .common-page-main
-  position: relative
+  //position: relative
   .weather-wrapper
     width: 100%
-    height: 25vh
+    height: 30%
     background-image: linear-gradient(to right, $blue, $purple)
     padding: 0 4.4vw
     .today-weather
@@ -297,6 +300,7 @@ export default {
       display: flex
       justify-content: space-between
       align-items: center
+      margin: 1vh 0
       .weather-item
         flex: 0 0 30%
         width: 30%
@@ -309,16 +313,19 @@ export default {
           font-size: 1.2rem
           color: $white
   .other-wrapper
-    position: absolute
-    top: 18vh
-    left: 0
+    //position: absolute
+    //top: 18vh
+    //left: 0
     width: 100%
-    height:67vh
+    height: 77.5%
+    transform: translateY(-10%)
+    overflow: hidden
     display: flex
     flex-direction: column
+    overflow: hidden
     .air-box
       .air-detail
-        height: 20vh
+        min-height: 20vh
         display: flex
         justify-content: space-between
         align-items: center
@@ -373,11 +380,16 @@ export default {
               border-bottom: 2px solid $mainfont
     .water-box
       flex: auto
+      display: flex
+      flex-direction: column
       .water-detail
+        flex: auto
+        display: flex
+        flex-direction: column
         .common-echarts-box
           height: 25vh
         .water-list
-          padding: 3vh 0
+          flex: auto
           display: flex
           justify-content: space-around
           align-items: center

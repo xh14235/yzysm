@@ -1,7 +1,7 @@
 <template>
   <div class="common-wrapper map-wrapper">
     <div class="common-page-title">能源</div>
-    <div class="common-page-main">
+    <div class="common-page-main" :class="{ isSafari: isSafari }">
       <div class="all-num">
         <div class="all-num-detail">
           <span class="num">{{
@@ -112,7 +112,8 @@ export default {
       yellow: state => state.color.yellow,
       red: state => state.color.red,
       white: state => state.color.white,
-      purple: state => state.color.purple
+      purple: state => state.color.purple,
+      isSafari: state => state.isSafari
     })
   },
   methods: {
@@ -279,10 +280,10 @@ export default {
 <style lang="stylus" scoped>
 @import "~@/assets/css/common.styl"
 .common-page-main
-  position: relative
+  //position: relative
   .all-num
     width: 100%
-    height: 20vh
+    height: 25%
     background-image: linear-gradient(to right, $blue, $purple)
     text-align: center
     .all-num-detail
@@ -296,11 +297,14 @@ export default {
       color: $white
       font-size: 1.2rem
   .single-num
-    position: absolute
-    top: 13vh
-    left: 0
+    //position: absolute
+    //top: 13vh
+    //left: 0
+    flex: auto
     width: 100%
-    height: 72vh
+    height: 83%
+    transform: translateY(-10%)
+    overflow: hidden
     display: flex
     flex-direction: column
     .date-box
@@ -331,11 +335,19 @@ export default {
           padding-top: 2px
           margin-left: 2vw
     .supply-box
+      flex: auto
+      display: flex
+      flex-direction: column
       .common-echarts-box
-        height: 24vh
+        flex: auto
+        height: 20vh
     .consume-box
+      flex: auto
+      display: flex
+      flex-direction: column
       .common-echarts-box
-        height: 25vh
+        flex: auto
+        height: 20vh
 .datetime-picker-wrapper
   width: 100%
   height: 100vh

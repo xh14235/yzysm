@@ -1,7 +1,7 @@
 <template>
   <div class="common-wrapper map-wrapper">
     <div class="common-page-title">监控</div>
-    <div class="common-page-main">
+    <div class="common-page-main" :class="{ isSafari: isSafari }">
       <div class="video-wrapper" @touchstart="showVideoIcon">
         <video src="@/assets/video/login.mp4" ref="video"></video>
         <transition name="opacity">
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getAbnormalMonitoring } from "@/http/api";
 export default {
   name: "Monitor",
@@ -68,6 +69,11 @@ export default {
       timer: null,
       interval: 60000
     };
+  },
+  computed: {
+    ...mapState({
+      isSafari: state => state.isSafari
+    })
   },
   methods: {
     controlVideo() {
@@ -97,7 +103,6 @@ export default {
     },
     getAbnormalList() {
       getAbnormalMonitoring().then(res => {
-        console.log(res);
         this.abnormalList = res.data;
       });
     }
@@ -122,8 +127,9 @@ export default {
   flex-direction: column
   .video-wrapper
     width: 100%
-    height: 31.5vh
+    height: 32vh
     position: relative
+    background: #000
     video
       width: 100%
       height: 100%
@@ -146,7 +152,7 @@ export default {
       padding-left: 5vw
     .abnormal-list
       border-left: 1px solid #E9EEF5
-      height: 100%
+      //height: 100%
       margin-left: 10vw
       .abnormal-item
         transform: translateX(-4vw)

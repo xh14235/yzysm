@@ -29,7 +29,9 @@ export default new Vuex.Store({
       Analysis: ["left01", "left02", "right01"]
     },
     supplyData: {},
-    consumeData: {}
+    consumeData: {},
+    // 判断是否为safari
+    isSafari: localStorage.getItem("isSafari")
   },
   mutations: {
     changeMapTab(state, index) {
