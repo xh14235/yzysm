@@ -1,5 +1,7 @@
 <template>
-  <div id="container"></div>
+  <div class="map-wrapper">
+    <div id="container"></div>
+  </div>
 </template>
 
 <script>
@@ -30,10 +32,16 @@ export default {
       this.camera.position.z = 0.6;
       this.scene = new Three.Scene();
 
-      let geometry = new Three.BoxGeometry(0.2, 0.2, 0.2);
-      let material = new Three.MeshNormalMaterial();
-      this.mesh = new Three.Mesh(geometry, material);
-      this.scene.add(this.mesh);
+      this.scene.background = new Three.CubeTextureLoader()
+        .setPath("/models/skyBox/")
+        .load([
+          "right.jpg",
+          "left.jpg",
+          "top.jpg",
+          "bottom.jpg",
+          "front.jpg",
+          "back.jpg"
+        ]);
 
       let point = new Three.PointLight(0xffffff);
       point.position.set(20, 20, 20);
@@ -66,8 +74,6 @@ export default {
     },
     animate: function() {
       requestAnimationFrame(this.animate);
-      this.mesh.rotation.x += 0.01;
-      this.mesh.rotation.y += 0.02;
       this.controls.update();
       this.renderer.render(this.scene, this.camera);
     },
@@ -330,6 +336,28 @@ export default {
           });
           object11.scale.set(0.001, 0.001, 0.001);
           this.scene.add(object11);
+        }),
+        new FBXLoader().setPath("/models/").load("dimian12.FBX", dimian12 => {
+          dimian12.traverse(function(child) {
+            var lightMap = new Three.TextureLoader().load(
+              "/models/dimian12LightingMap.jpg"
+            );
+            var map = new Three.TextureLoader().load("/models/27.png", function(
+              texture
+            ) {
+              texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+              texture.offset.set(0, 0);
+              texture.repeat.set(0.5, 0.7);
+            });
+            var mater = new Three.MeshBasicMaterial({
+              color: 0xffffff,
+              lightMap: lightMap,
+              map: map
+            });
+            child.material = mater;
+          });
+          dimian12.scale.set(0.001, 0.001, 0.001);
+          this.scene.add(dimian12);
         }),
         new FBXLoader()
           .setPath("/models/")
@@ -685,6 +713,65 @@ export default {
           }),
         new FBXLoader()
           .setPath("/models/")
+          .load("jizhuangxiang01.FBX", jizhuangxiang01 => {
+            jizhuangxiang01.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang01LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang01.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang01);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang02.FBX", jizhuangxiang02 => {
+            jizhuangxiang02.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang02LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            jizhuangxiang02.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang02);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang03.FBX", jizhuangxiang03 => {
+            jizhuangxiang03.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang03LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            jizhuangxiang03.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang03);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
           .load("qiutizhizhu.FBX", qiutizhizhu => {
             qiutizhizhu.traverse(function(child) {
               var lightMap = new Three.TextureLoader().load(
@@ -887,6 +974,70 @@ export default {
             });
             weiqiang07.scale.set(0.001, 0.001, 0.001);
             this.scene.add(weiqiang07);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("weiqiang08.FBX", weiqiang08 => {
+            weiqiang08.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/weiqiang08LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            weiqiang08.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(weiqiang08);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("weiqiang09.FBX", weiqiang09 => {
+            weiqiang09.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/weiqiang09LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            weiqiang09.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(weiqiang09);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("weiqiang10.FBX", weiqiang10 => {
+            weiqiang10.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/weiqiang10LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            weiqiang10.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(weiqiang10);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("weiqiang11.FBX", weiqiang11 => {
+            weiqiang11.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/weiqiang11LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            weiqiang11.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(weiqiang11);
           }),
         new FBXLoader().setPath("/models/").load("shanlan01.FBX", shanlan01 => {
           shanlan01.traverse(function(child) {
@@ -1267,7 +1418,81 @@ export default {
             });
             zixingchepeng02.scale.set(0.001, 0.001, 0.001);
             this.scene.add(zixingchepeng02);
+          }),
+        new FBXLoader().setPath("/models/").load("tree01.FBX", tree01 => {
+          tree01.traverse(function(child) {
+            var alphaMap = new Three.TextureLoader().load(
+              "/models/tree01_alpha.jpg",
+              function(texture) {
+                texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                texture.offset.set(0, 0);
+                texture.repeat.set(1, 1);
+              }
+            );
+            var map = new Three.TextureLoader().load(
+              "/models/tree01.jpg",
+              function(texture) {
+                texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                texture.offset.set(0, 0);
+                texture.repeat.set(1, 1);
+              }
+            );
+            var mater = new Three.MeshBasicMaterial({
+              color: 0xffffff,
+              map: map,
+              transparent: true,
+              side: Three.DoubleSide,
+              alphaMap: alphaMap,
+              depthTest: true,
+              depthWrite: false
+            });
+            child.material = mater;
           });
+          tree01.scale.set(0.001, 0.001, 0.001);
+          let tree01Clone01 = tree01.clone();
+          tree01Clone01.position.set(-0.5, 0, 0.02);
+          let tree01Clone02 = tree01.clone();
+          tree01Clone02.position.set(-0.5, 0, 0.36);
+          let tree01Clone03 = tree01.clone();
+          tree01Clone03.position.set(-0.27, 0, 0.36);
+          let tree01Clone04 = tree01.clone();
+          tree01Clone04.position.set(-0, 0, 0.36);
+          let tree01Clone05 = tree01.clone();
+          tree01Clone05.position.set(-0.25, 0, 0.02);
+          this.scene.add(tree01);
+          this.scene.add(tree01Clone01);
+          this.scene.add(tree01Clone02);
+          this.scene.add(tree01Clone03);
+          this.scene.add(tree01Clone04);
+          this.scene.add(tree01Clone05);
+        });
+      /*new MTLLoader().setPath('/models/tree/').load('shugan01.mtl', materials => {
+        console.log('materials', materials)
+        materials.preload()
+        new OBJLoader().setMaterials(materials).setPath('/models/tree/').load('shugan01.obj', obj => {
+          obj.scale.set(0.001, 0.001, 0.001)
+          obj.position.set(0, 0, 0)
+          this.scene.add(obj)
+        })
+      })
+      new MTLLoader().setPath('/models/tree/').load('shuye01.mtl', materials => {
+        console.log('materials', materials)
+        materials.preload()
+        new OBJLoader().setMaterials(materials).setPath('/models/tree/').load('shuye01.obj', obj => {
+          obj.traverse(function (child)
+          {
+            if(child instanceof Three.Mesh)
+            {
+              child.material.transparent = true;
+              child.material.depthTest = true;
+              child.material.depthWrite = false;
+            }
+          });
+          obj.scale.set(0.001, 0.001, 0.001)
+          obj.position.set(0, 0, 0)
+          this.scene.add(obj)
+        })
+      })*/
     }
   },
   mounted() {
@@ -1278,7 +1503,14 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-#container
+.map-wrapper
+  position: absolute
+  top: 0
+  left: 0
   width: 100%
-  height: 100%
+  height: 100vh
+
+  #container
+    width: 100%
+    height: 100%
 </style>

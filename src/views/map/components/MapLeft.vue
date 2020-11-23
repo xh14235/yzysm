@@ -24,6 +24,7 @@ export default {
     },
     mapFullScreen() {
       console.log("全屏");
+      this.$router.push("/screen");
     }
   }
 };

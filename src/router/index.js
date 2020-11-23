@@ -52,6 +52,18 @@ const routes = [
         /* webpackChunkName: "Environment" */
         "../views/environment/Environment.vue"
       )
+  },
+  {
+    path: "/screen",
+    name: "Screen",
+    meta: {
+      auth: true
+    },
+    component: () =>
+      import(
+        /* webpackChunkName: "Screen" */
+        "../views/screen/Screen.vue"
+      )
   }
 ];
 
