@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import color from "./color";
 import font from "./font";
+import map from "./map";
 
 let defaultToken = sessionStorage.token || "";
 let defaultMapTab = parseInt(sessionStorage.getItem("mapTab")) || 0;
@@ -11,6 +12,7 @@ Vue.use(Vuex);
 // 能源供给及能源消费页面 累计能量值及能源占比图数据请求
 export default new Vuex.Store({
   state: {
+    // isLoaded: true,
     token: defaultToken,
     weather: "",
     pm25: "",
@@ -61,6 +63,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     color,
-    font
+    font,
+    map
   }
 });

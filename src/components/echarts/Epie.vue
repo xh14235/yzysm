@@ -39,7 +39,7 @@ export default {
         title: {
           text: pieData.title, // 饼图中间数字
           textStyle: {
-            color: "#757575",
+            color: pieData.fontColor || "#757575",
             fontWeight: "normal",
             fontSize: font2
           },
@@ -62,7 +62,7 @@ export default {
         legend: {
           show: pieData.legendShow,
           textStyle: {
-            color: "#757575",
+            color: pieData.fontColor || "#757575",
             fontSize: font1
           },
           icon: "circle",

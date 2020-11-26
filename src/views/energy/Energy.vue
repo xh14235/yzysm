@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { getAllEnergyNum, getConsumerEnergyNum } from "@/http/api";
+import { getEnergySavingTrend } from "@/http/api";
 import { DatetimePicker } from "vant";
 import { mapState } from "vuex";
 export default {
@@ -98,11 +98,14 @@ export default {
       echarts2: {},
       allSupplyEnergy: 0,
       dateType: "year-month",
+      dateType2: "month",
       dateTitle: "选择年月",
       datePickerShow: false,
       minDate: new Date(2019, 0, 1),
       maxDate: new Date(2020, 11, 1),
-      currentDate: new Date()
+      currentDate: new Date(),
+      timer: null,
+      interval: 60000
     };
   },
   computed: {
@@ -121,19 +124,33 @@ export default {
       this.curDate = index;
       if (index === 1) {
         this.dateType = "date";
+        this.dateType2 = "day";
         this.dateTitle = "选择年月日";
+        this.currentDate = new Date();
       } else {
         this.dateType = "year-month";
+        this.dateType2 = "month";
         this.dateTitle = "选择年月";
       }
+      clearInterval(this.timer);
+      this.timer = null;
+      this.getEchartsData(this.dateType2, this.currentDate);
+      this.timer = setInterval(() => {
+        this.getEchartsData(this.dateType2, this.currentDate);
+      }, this.interval);
     },
-    getEchartsData1() {
-      getAllEnergyNum({}).then(res => {
-        this.allSupplyEnergy =
-          res.data.electricity +
-          res.data.hotWater +
-          res.data.cold +
-          res.data.hot;
+    getEchartsData(dateType, date) {
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      month = month > 9 ? month : "0" + month;
+      let day = date.getDate();
+      day = day > 9 ? day : "0" + day;
+      date = year + "-" + month + "-" + day;
+      getEnergySavingTrend({
+        date,
+        dateType
+      }).then(res => {
+        let len = res.data.Electricity.length - 1;
         this.echarts1 = {
           id: "dddd",
           name: "用能比例",
@@ -147,71 +164,39 @@ export default {
           center: ["30%", "50%"],
           color: [this.green, this.blue, this.purple, this.yellow],
           data: [
-            { value: Math.floor(res.data.electricity) || 0, name: "电" },
-            { value: Math.floor(res.data.hotWater) || 0, name: "热水" },
-            { value: Math.floor(res.data.cold) || 0, name: "冷" },
-            { value: Math.floor(res.data.hot) || 0, name: "热" }
+            {
+              value: Math.floor(res.data.Electricity[len].value) || 0,
+              name: "电"
+            },
+            {
+              value: Math.floor(res.data.HotWater[len].value) || 0,
+              name: "热水"
+            },
+            {
+              value: Math.floor(res.data.Cold[len].value) || 0,
+              name: "冷"
+            },
+            {
+              value: Math.floor(res.data.Hot[len].value) || 0,
+              name: "热"
+            }
           ]
         };
-      });
-    },
-    getEchartsData2() {
-      let promise1 = new Promise((resolve, reject) => {
-        getConsumerEnergyNum({ type: "ELECTRICITY" }).then(res => {
-          if (res.success) {
-            let data = res.data.slice(-24);
-            let xData = data.map(item => {
-              return item.hourValue - 1;
-            });
-            let yData = data.map(item => {
-              return item.value;
-            });
-            resolve({ xData, yData });
-          } else {
-            reject();
-          }
+        let xData = res.data.Cold.map(item => {
+          return item.commonValue;
         });
-      });
-      let promise2 = new Promise((resolve, reject) => {
-        getConsumerEnergyNum({ type: "HOT_WATER" }).then(res => {
-          if (res.success) {
-            let data = res.data.slice(-24);
-            let yData = data.map(item => {
-              return item.value;
-            });
-            resolve(yData);
-          } else {
-            reject();
-          }
+        let yData1 = res.data.Electricity.map(item => {
+          return item.value;
         });
-      });
-      let promise3 = new Promise((resolve, reject) => {
-        getConsumerEnergyNum({ type: "COLD" }).then(res => {
-          if (res.success) {
-            let data = res.data.slice(-24);
-            let yData = data.map(item => {
-              return item.value;
-            });
-            resolve(yData);
-          } else {
-            reject();
-          }
+        let yData2 = res.data.HotWater.map(item => {
+          return item.value;
         });
-      });
-      let promise4 = new Promise((resolve, reject) => {
-        getConsumerEnergyNum({ type: "HOT" }).then(res => {
-          if (res.success) {
-            let data = res.data.slice(-24);
-            let yData = data.map(item => {
-              return item.value;
-            });
-            resolve(yData);
-          } else {
-            reject();
-          }
+        let yData3 = res.data.Cold.map(item => {
+          return item.value;
         });
-      });
-      Promise.all([promise1, promise2, promise3, promise4]).then(res => {
+        let yData4 = res.data.Hot.map(item => {
+          return item.value;
+        });
         this.echarts2 = {
           id: "echarts2",
           title: "",
@@ -240,9 +225,9 @@ export default {
           color: [this.green, this.blue, this.purple, this.yellow],
           areaColor: false,
           smooth: true,
-          xData: res[0].xData,
+          xData: xData,
           yName: "(kWh)",
-          data: [res[0].yData, res[1], res[2], res[3]]
+          data: [yData1, yData2, yData3, yData4]
         };
       });
     },
@@ -254,8 +239,12 @@ export default {
     },
     changeDate() {
       this.hideDatePicker();
-      this.getEchartsData1();
-      this.getEchartsData2();
+      clearInterval(this.timer);
+      this.timer = null;
+      this.getEchartsData(this.dateType2, this.currentDate);
+      this.timer = setInterval(() => {
+        this.getEchartsData(this.dateType2, this.currentDate);
+      }, this.interval);
     },
     getDateFormat(date) {
       let year = date.getFullYear();
@@ -271,8 +260,14 @@ export default {
     }
   },
   mounted() {
-    this.getEchartsData1();
-    this.getEchartsData2();
+    this.getEchartsData(this.dateType2, this.currentDate);
+    this.timer = setInterval(() => {
+      this.getEchartsData(this.dateType2, this.currentDate);
+    }, this.interval);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null;
   }
 };
 </script>

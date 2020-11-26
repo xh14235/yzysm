@@ -79,7 +79,7 @@ export default {
 .login-wrapper
   width: 100%
   height: 100%
-  background-image: url("../../assets/img/login-bg.png")
+  background-image: url("../../assets/img/login-bg.jpg")
   background-size: 100% 100%
   position: relative
   padding-top: 10.5vh

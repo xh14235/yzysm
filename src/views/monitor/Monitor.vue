@@ -3,7 +3,7 @@
     <div class="common-page-title">监控</div>
     <div class="common-page-main" :class="{ isSafari: isSafari }">
       <div class="video-wrapper" @touchstart="showVideoIcon">
-        <video src="@/assets/video/login.mp4" ref="video"></video>
+        <video src="@/assets/video/test.mp4" ref="video"></video>
         <transition name="opacity">
           <img
             class="video-control"

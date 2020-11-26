@@ -8,6 +8,7 @@
 import * as Three from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { Water } from "three/examples/jsm/objects/myWater";
 
 export default {
   name: "ThreeTest",
@@ -17,7 +18,12 @@ export default {
       scene: null,
       renderer: null,
       mesh: null,
-      controls: null
+      mesh2: null,
+      mesh3: null,
+      controls: null,
+      water1: null,
+      water2: null,
+      stats: null
     };
   },
   methods: {
@@ -32,7 +38,8 @@ export default {
       this.camera.position.z = 0.6;
       this.scene = new Three.Scene();
 
-      this.scene.background = new Three.CubeTextureLoader()
+      this.clock = new Three.Clock();
+      var sky = new Three.CubeTextureLoader()
         .setPath("/models/skyBox/")
         .load([
           "right.jpg",
@@ -43,9 +50,60 @@ export default {
           "back.jpg"
         ]);
 
-      let point = new Three.PointLight(0xffffff);
-      point.position.set(20, 20, 20);
-      this.scene.add(point);
+      this.scene.background = sky;
+      let geometry = new Three.PlaneBufferGeometry(1, 1, 1);
+      let geometry2 = new Three.PlaneBufferGeometry(3.59, 0.29, 1);
+
+      let mesh1,
+        mesh2,
+        mesh3,
+        mesh4,
+        mesh5,
+        mesh6,
+        mesh7,
+        mesh8,
+        mesh9,
+        mesh10,
+        mesh11,
+        mesh12,
+        mesh13;
+      this.meshGroup = [
+        mesh1,
+        mesh2,
+        mesh3,
+        mesh4,
+        mesh5,
+        mesh6,
+        mesh7,
+        mesh8,
+        mesh9,
+        mesh10,
+        mesh11,
+        mesh12,
+        mesh13
+      ];
+
+      this.water1 = new Water(geometry, {
+        color: "#c0e3ef",
+        scale: 0.01,
+        flowDirection: new Three.Vector2(1, 1),
+        textureWidth: 1024,
+        textureHeight: 1024
+      });
+      this.water1.rotation.x = -0.5 * Math.PI;
+      this.water1.position.set(0, 0.02, 0);
+      this.scene.add(this.water1);
+
+      this.water2 = new Water(geometry2, {
+        color: "#ecf9ea",
+        scale: 0.01,
+        flowDirection: new Three.Vector2(1, 1),
+        textureWidth: 1024,
+        textureHeight: 1024
+      });
+      this.water2.rotation.x = -0.5 * Math.PI;
+      this.water2.position.set(-0.31, -0.045, -0.85);
+      this.scene.add(this.water2);
 
       /*var groundGeom = new Three.PlaneGeometry(10, 10, 1, 1)
       var lightMap = new  Three.TextureLoader().load('/models/dimian01LightingMap.jpg')
@@ -74,6 +132,11 @@ export default {
     },
     animate: function() {
       requestAnimationFrame(this.animate);
+      this.meshGroup[0].rotateY(0.01);
+      this.meshGroup[1].rotateY(0.02);
+      this.meshGroup[2].rotateY(0.03);
+      this.meshGroup[3].rotateY(0.02);
+      this.meshGroup[4].rotateY(0.03);
       this.controls.update();
       this.renderer.render(this.scene, this.camera);
     },
@@ -359,6 +422,85 @@ export default {
           dimian12.scale.set(0.001, 0.001, 0.001);
           this.scene.add(dimian12);
         }),
+        new FBXLoader().setPath("/models/").load("dimian13.FBX", dimian13 => {
+          dimian13.traverse(function(child) {
+            var lightMap = new Three.TextureLoader().load(
+              "/models/dimian13LightingMap.jpg"
+            );
+            var map = new Three.TextureLoader().load("/models/27.png", function(
+              texture
+            ) {
+              texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+              texture.offset.set(0, 0);
+              texture.repeat.set(0.5, 0.7);
+            });
+            var mater = new Three.MeshBasicMaterial({
+              color: 0xffffff,
+              lightMap: lightMap,
+              map: map
+            });
+            child.material = mater;
+          });
+          dimian13.scale.set(0.001, 0.001, 0.001);
+          this.scene.add(dimian13);
+        }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("fenglifadian.FBX", fenglifadian => {
+            fenglifadian.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/fenglifadianLightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            fenglifadian.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(fenglifadian);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("fengjiye01.FBX", fengjiye01 => {
+            fengjiye01.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/fengjiye01LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+
+            fengjiye01.scale.set(0.001, 0.001, 0.001);
+            fengjiye01.position.set(-1.781, 0.225, 0.545);
+            this.meshGroup[0] = new Three.Mesh();
+            this.meshGroup[0] = fengjiye01;
+
+            this.meshGroup[1] = this.meshGroup[0].clone();
+            this.meshGroup[1].position.set(-1.7, 0.18, 0.49);
+            this.meshGroup[1].scale.set(0.0008, 0.0008, 0.0008);
+
+            this.meshGroup[2] = this.meshGroup[0].clone();
+            this.meshGroup[2].position.set(-1.804, 0.188, 0.473);
+            this.meshGroup[2].scale.set(0.00085, 0.00085, 0.00085);
+
+            this.meshGroup[3] = this.meshGroup[0].clone();
+            this.meshGroup[3].position.set(-1.703, 0.13, 0.592);
+            this.meshGroup[3].scale.set(0.0006, 0.0006, 0.0006);
+
+            this.meshGroup[4] = this.meshGroup[0].clone();
+            this.meshGroup[4].position.set(-1.866, 0.145, 0.591);
+            this.meshGroup[4].scale.set(0.0007, 0.0007, 0.0007);
+
+            this.scene.add(this.meshGroup[0]);
+            this.scene.add(this.meshGroup[1]);
+            this.scene.add(this.meshGroup[2]);
+            this.scene.add(this.meshGroup[3]);
+            this.scene.add(this.meshGroup[4]);
+          }),
         new FBXLoader()
           .setPath("/models/")
           .load("zhanguan01.FBX", zhanguan01 => {
@@ -621,8 +763,7 @@ export default {
               );
               var mater = new Three.MeshBasicMaterial({
                 color: 0xffffff,
-                lightMap: lightMap,
-                side: Three.DoubleSide
+                lightMap: lightMap
               });
               child.material = mater;
             });
@@ -713,11 +854,28 @@ export default {
           }),
         new FBXLoader()
           .setPath("/models/")
+          .load("zhanguan19.FBX", zhanguan19 => {
+            zhanguan19.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/zhanguan19LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            zhanguan19.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(zhanguan19);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
           .load("jizhuangxiang01.FBX", jizhuangxiang01 => {
             jizhuangxiang01.traverse(function(child) {
               var lightMap = new Three.TextureLoader().load(
                 "/models/jizhuangxiang01LightingMap.jpg"
               );
+
               var sky = new Three.CubeTextureLoader()
                 .setPath("/models/skyBox/")
                 .load([
@@ -728,8 +886,10 @@ export default {
                   "front.jpg",
                   "back.jpg"
                 ]);
-              var mater = new Three.MeshBasicMaterial({
+              var mater = new Three.MeshPhysicalMaterial({
                 color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
                 lightMap: lightMap,
                 envMap: sky
               });
@@ -745,9 +905,22 @@ export default {
               var lightMap = new Three.TextureLoader().load(
                 "/models/jizhuangxiang02LightingMap.jpg"
               );
-              var mater = new Three.MeshBasicMaterial({
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
                 color: 0xffffff,
-                lightMap: lightMap
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
               });
               child.material = mater;
             });
@@ -761,14 +934,450 @@ export default {
               var lightMap = new Three.TextureLoader().load(
                 "/models/jizhuangxiang03LightingMap.jpg"
               );
-              var mater = new Three.MeshBasicMaterial({
+              var map = new Three.TextureLoader().load(
+                "/models/wood02.jpg",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshPhysicalMaterial({
                 color: 0xffffff,
-                lightMap: lightMap
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: map
               });
               child.material = mater;
             });
             jizhuangxiang03.scale.set(0.001, 0.001, 0.001);
             this.scene.add(jizhuangxiang03);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang04.FBX", jizhuangxiang04 => {
+            jizhuangxiang04.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang04LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang04.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang04);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang05.FBX", jizhuangxiang05 => {
+            jizhuangxiang05.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang05LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang05.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang05);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang06.FBX", jizhuangxiang06 => {
+            jizhuangxiang06.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang06LightingMap.jpg"
+              );
+              var map = new Three.TextureLoader().load(
+                "/models/wood02.jpg",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: map
+              });
+              child.material = mater;
+            });
+            jizhuangxiang06.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang06);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang07.FBX", jizhuangxiang07 => {
+            jizhuangxiang07.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang07LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang07.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang07);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang08.FBX", jizhuangxiang08 => {
+            jizhuangxiang08.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang08LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang08.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang08);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang09.FBX", jizhuangxiang09 => {
+            jizhuangxiang09.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang09LightingMap.jpg"
+              );
+              var map = new Three.TextureLoader().load(
+                "/models/wood02.jpg",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: map
+              });
+              child.material = mater;
+            });
+            jizhuangxiang09.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang09);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang10.FBX", jizhuangxiang10 => {
+            jizhuangxiang10.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang10LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang10.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang10);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang11.FBX", jizhuangxiang11 => {
+            jizhuangxiang11.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang11LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang11.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang11);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang12.FBX", jizhuangxiang12 => {
+            jizhuangxiang12.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang12LightingMap.jpg"
+              );
+              var map = new Three.TextureLoader().load(
+                "/models/wood02.jpg",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: map
+              });
+              child.material = mater;
+            });
+            jizhuangxiang12.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang12);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang13.FBX", jizhuangxiang13 => {
+            jizhuangxiang13.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang13LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang13.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang13);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang14.FBX", jizhuangxiang14 => {
+            jizhuangxiang14.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang14LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang14.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang14);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang15.FBX", jizhuangxiang15 => {
+            jizhuangxiang15.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang15LightingMap.jpg"
+              );
+              var map = new Three.TextureLoader().load(
+                "/models/wood02.jpg",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: map
+              });
+              child.material = mater;
+            });
+            jizhuangxiang15.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang15);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang16.FBX", jizhuangxiang16 => {
+            jizhuangxiang16.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang16LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang16.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang16);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang17.FBX", jizhuangxiang17 => {
+            jizhuangxiang17.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang17LightingMap.jpg"
+              );
+              var sky = new Three.CubeTextureLoader()
+                .setPath("/models/skyBox/")
+                .load([
+                  "right.jpg",
+                  "left.jpg",
+                  "top.jpg",
+                  "bottom.jpg",
+                  "front.jpg",
+                  "back.jpg"
+                ]);
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: sky
+              });
+              child.material = mater;
+            });
+            jizhuangxiang17.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang17);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("jizhuangxiang18.FBX", jizhuangxiang18 => {
+            jizhuangxiang18.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/jizhuangxiang18LightingMap.jpg"
+              );
+              var map = new Three.TextureLoader().load(
+                "/models/wood02.jpg",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.2,
+                roughness: 0.1,
+                lightMap: lightMap,
+                envMap: map
+              });
+              child.material = mater;
+            });
+            jizhuangxiang18.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(jizhuangxiang18);
           }),
         new FBXLoader()
           .setPath("/models/")
@@ -998,9 +1607,18 @@ export default {
               var lightMap = new Three.TextureLoader().load(
                 "/models/weiqiang09LightingMap.jpg"
               );
+              var map = new Three.TextureLoader().load(
+                "/models/STON04M.JPG",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
               var mater = new Three.MeshBasicMaterial({
                 color: 0xffffff,
-                lightMap: lightMap
+                lightMap: lightMap,
+                map: map
               });
               child.material = mater;
             });
@@ -1038,6 +1656,22 @@ export default {
             });
             weiqiang11.scale.set(0.001, 0.001, 0.001);
             this.scene.add(weiqiang11);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
+          .load("weiqiang12.FBX", weiqiang12 => {
+            weiqiang12.traverse(function(child) {
+              var lightMap = new Three.TextureLoader().load(
+                "/models/weiqiang12LightingMap.jpg"
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0xffffff,
+                lightMap: lightMap
+              });
+              child.material = mater;
+            });
+            weiqiang12.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(weiqiang12);
           }),
         new FBXLoader().setPath("/models/").load("shanlan01.FBX", shanlan01 => {
           shanlan01.traverse(function(child) {
@@ -1348,6 +1982,27 @@ export default {
           }),
         new FBXLoader()
           .setPath("/models/")
+          .load("guangfuban03.FBX", guangfuban03 => {
+            guangfuban03.traverse(function(child) {
+              var map = new Three.TextureLoader().load(
+                "/models/taiyangban.png",
+                function(texture) {
+                  texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+                  texture.offset.set(0, 0);
+                  texture.repeat.set(1, 1);
+                }
+              );
+              var mater = new Three.MeshBasicMaterial({
+                color: 0x050885,
+                map: map
+              });
+              child.material = mater;
+            });
+            guangfuban03.scale.set(0.001, 0.001, 0.001);
+            this.scene.add(guangfuban03);
+          }),
+        new FBXLoader()
+          .setPath("/models/")
           .load("guangfubanjiazi01.FBX", guangfubanjiazi01 => {
             guangfubanjiazi01.traverse(function(child) {
               var lightMap = new Three.TextureLoader().load(
@@ -1419,6 +2074,75 @@ export default {
             zixingchepeng02.scale.set(0.001, 0.001, 0.001);
             this.scene.add(zixingchepeng02);
           }),
+        new FBXLoader().setPath("/models/").load("boli01.FBX", boli01 => {
+          boli01.traverse(function(child) {
+            var sky = new Three.CubeTextureLoader()
+              .setPath("/models/skyBox/")
+              .load([
+                "right.jpg",
+                "left.jpg",
+                "top.jpg",
+                "bottom.jpg",
+                "front.jpg",
+                "back.jpg"
+              ]);
+            var mater = new Three.MeshBasicMaterial({
+              color: 0xffffff,
+              transparent: true,
+              opacity: 0.9,
+              envMap: sky
+            });
+            child.material = mater;
+          });
+          boli01.scale.set(0.001, 0.001, 0.001);
+          this.scene.add(boli01);
+        }),
+        new FBXLoader().setPath("/models/").load("boli02.FBX", boli02 => {
+          boli02.traverse(function(child) {
+            var sky = new Three.CubeTextureLoader()
+              .setPath("/models/skyBox/")
+              .load([
+                "right.jpg",
+                "left.jpg",
+                "top.jpg",
+                "bottom.jpg",
+                "front.jpg",
+                "back.jpg"
+              ]);
+            var mater = new Three.MeshBasicMaterial({
+              color: 0xffffff,
+              transparent: true,
+              opacity: 0.9,
+              envMap: sky
+            });
+            child.material = mater;
+          });
+          boli02.scale.set(0.001, 0.001, 0.001);
+          this.scene.add(boli02);
+        }),
+        new FBXLoader().setPath("/models/").load("boli03.FBX", boli03 => {
+          boli03.traverse(function(child) {
+            var sky = new Three.CubeTextureLoader()
+              .setPath("/models/skyBox/")
+              .load([
+                "right.jpg",
+                "left.jpg",
+                "top.jpg",
+                "bottom.jpg",
+                "front.jpg",
+                "back.jpg"
+              ]);
+            var mater = new Three.MeshBasicMaterial({
+              color: 0xffffff,
+              transparent: true,
+              opacity: 0.9,
+              envMap: sky
+            });
+            child.material = mater;
+          });
+          boli03.scale.set(0.001, 0.001, 0.001);
+          this.scene.add(boli03);
+        }),
         new FBXLoader().setPath("/models/").load("tree01.FBX", tree01 => {
           tree01.traverse(function(child) {
             var alphaMap = new Three.TextureLoader().load(
@@ -1493,11 +2217,26 @@ export default {
           this.scene.add(obj)
         })
       })*/
+    },
+    initGui: function() {
+      //水的属性设置
+      this.water1.material.uniforms["config"].value.w = 2;
+      this.water1.material.uniforms["flowDirection"].value.x = 1;
+      this.water1.material.uniforms["flowDirection"].value.normalize(); //归一化
+      this.water1.material.uniforms["flowDirection"].value.y = 1;
+      this.water1.material.uniforms["flowDirection"].value.normalize();
+
+      this.water2.material.uniforms["config"].value.w = 1;
+      this.water2.material.uniforms["flowDirection"].value.x = -0.2;
+      this.water2.material.uniforms["flowDirection"].value.normalize(); //归一化
+      this.water2.material.uniforms["flowDirection"].value.y = -1;
+      this.water2.material.uniforms["flowDirection"].value.normalize();
     }
   },
   mounted() {
     this.init();
     this.loadObj();
+    this.initGui();
     this.animate();
   }
 };
@@ -1508,8 +2247,7 @@ export default {
   top: 0
   left: 0
   width: 100%
-  height: 100vh
-
+  height: 100%
   #container
     width: 100%
     height: 100%

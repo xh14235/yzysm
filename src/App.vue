@@ -1,6 +1,6 @@
 <template>
-  <div id="app" :style="style">
-    <keep-alive>
+  <div id="app">
+    <keep-alive exclude="Map,Screen">
       <router-view />
     </keep-alive>
   </div>
@@ -9,11 +9,6 @@
 <script>
 export default {
   name: "App",
-  data() {
-    return {
-      style: {}
-    };
-  },
   mounted() {
     if (
       /Safari/.test(navigator.userAgent) &&
@@ -23,17 +18,6 @@ export default {
     } else {
       localStorage.setItem("isSafari", 0);
     }
-    // window.onorientationchange = () => {
-    //   if (window.orientation == 90 || window.orientation == -90) {
-    //     this.style = {
-    //       transform: "rotate(90deg)",
-    //       width: "100vh",
-    //       height: "100vw"
-    //     };
-    //   } else {
-    //     this.style = {};
-    //   }
-    // };
   }
 };
 </script>
