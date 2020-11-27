@@ -1,7 +1,6 @@
 <template>
   <div class="loading-wrapper">
-    <img src="@/assets/img/qing.png" alt="" class="loading-img" />
-    <div class="loading-info">loading...</div>
+    <img src="@/assets/img/loading.gif" alt="" class="loading-img" />
   </div>
 </template>
 
@@ -25,7 +24,7 @@ export default {
   justify-content: center
   align-items: center
   .loading-img
-    width: 20vw
+    width: 50vw
   .loading-info
     font-size: 3.2rem
     color: #fff

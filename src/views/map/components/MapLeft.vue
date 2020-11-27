@@ -6,12 +6,12 @@
       class="map-left-icon"
       @click="mapLocation()"
     />
-    <img
-      src="@/assets/img/map-full-screen.png"
-      alt=""
-      class="map-left-icon"
-      @click="mapFullScreen()"
-    />
+    <!--    <img-->
+    <!--      src="@/assets/img/map-full-screen.png"-->
+    <!--      alt=""-->
+    <!--      class="map-left-icon"-->
+    <!--      @click="mapFullScreen()"-->
+    <!--    />-->
   </div>
 </template>
 
@@ -21,11 +21,11 @@ export default {
   methods: {
     mapLocation() {
       console.log("定位到圆点");
-    },
-    mapFullScreen() {
-      console.log("全屏");
-      this.$router.push("/screen");
     }
+    // mapFullScreen() {
+    //   console.log("全屏");
+    //   this.$router.push("/screen");
+    // }
   }
 };
 </script>

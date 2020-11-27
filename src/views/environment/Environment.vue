@@ -216,6 +216,14 @@ export default {
       this.updateTime = hour + ":" + minute;
     },
     getWaterInfo() {
+      let date = new Date();
+      let hour = date.getHours();
+      let xData = [];
+      let data = [];
+      for (let i = 1; i <= hour; i++) {
+        xData.push(i);
+        data.push(Math.floor(Math.random() * 30));
+      }
       this.echarts = {
         id: "echarts2",
         title: "",
@@ -224,9 +232,9 @@ export default {
         color: [this.mainfont],
         areaColor: true,
         smooth: true,
-        xData: [1, 2, 3],
+        xData,
         yName: "(mg/L)",
-        data: [[1, 2, 3]]
+        data: [data]
       };
       this.waterList = [
         {

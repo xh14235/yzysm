@@ -73,12 +73,12 @@ export default {
   top: 1vh
   left: 4.4vw
   z-index: 1
-  padding: 3vw
+  padding: 6vw
   display: flex
   justify-content: space-between
   align-items: center
   .park-info-img
-    width: 19.2vw
+    height: 100%
     margin-right: 2vw
   .park-info-list
     flex: auto
