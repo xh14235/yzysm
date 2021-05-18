@@ -25,7 +25,7 @@
           <div
             class="abnormal-item"
             v-for="item of abnormalList"
-            :key="item.cameraId"
+            :key="item.warnTime"
           >
             <img
               class="abnormal-icon"
@@ -76,6 +76,7 @@ export default {
     })
   },
   methods: {
+    // 控制监控播放及暂停
     controlVideo() {
       let video = this.$refs.video;
       if (this.videoIcon === "play") {
@@ -86,6 +87,7 @@ export default {
         video.pause();
       }
     },
+    // 显示或隐藏播放监控按钮
     showVideoIcon() {
       if (this.videoIconShow) {
         this.videoIconShow = false;
@@ -93,6 +95,7 @@ export default {
         this.videoIconShow = true;
       }
     },
+    // 格式化日期方法
     getDateFormat(date) {
       let year = date.getFullYear();
       let month = date.getMonth() + 1;
@@ -101,6 +104,7 @@ export default {
       day = day < 10 ? "0" + day : day;
       return year + "-" + month + "-" + day;
     },
+    // 获取异常监控列表
     getAbnormalList() {
       getAbnormalMonitoring().then(res => {
         this.abnormalList = res.data;
@@ -121,7 +125,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "~@/assets/css/common.styl"
+@import '~@/assets/css/common.styl'
 .common-page-main
   display: flex
   flex-direction: column
@@ -152,7 +156,7 @@ export default {
       padding-left: 5vw
     .abnormal-list
       border-left: 1px solid #E9EEF5
-      //height: 100%
+      // height: 100%
       margin-left: 10vw
       .abnormal-item
         transform: translateX(-4vw)

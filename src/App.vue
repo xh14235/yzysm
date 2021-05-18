@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <!--    <keep-alive exclude="Map,Screen">-->
-    <router-view />
-    <!--    </keep-alive>-->
+    <!-- map页面缓存,其他页面不缓存 -->
+    <keep-alive includes="Map" excludes="Energy, Monitor, Environment">
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 export default {
   name: "App",
   mounted() {
+    // 判断是不是safari浏览器,因为safari浏览器有工具栏高度问题
     if (
       /Safari/.test(navigator.userAgent) &&
       !/Chrome/.test(navigator.userAgent)

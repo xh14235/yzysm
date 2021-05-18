@@ -29,7 +29,7 @@ export default {
     drawPie(pieData) {
       let bodyWidth = document.body.offsetWidth;
       let font1 = bodyWidth > 1600 ? 14 : 12;
-      let font2 = bodyWidth > 1600 ? 16 : 14;
+      // let font2 = bodyWidth > 1600 ? 16 : 14;
       let labelShow = true;
       if (pieData.labelShow === false) {
         labelShow = false;
@@ -41,7 +41,7 @@ export default {
           textStyle: {
             color: pieData.fontColor || "#757575",
             fontWeight: "normal",
-            fontSize: font2
+            fontSize: font1
           },
           textAlign: "center",
           top: pieData.titleTop,
@@ -68,7 +68,7 @@ export default {
           icon: "circle",
           itemWidth: 5,
           itemHeight: 5,
-          itemGap: 5,
+          itemGap: 2,
           orient: "vertical",
           right: 0,
           bottom: "center",

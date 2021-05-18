@@ -145,6 +145,7 @@ export default {
     Eline: () => import("@/components/echarts/Eline")
   },
   methods: {
+    // 获取天气信息
     getWeather() {
       const jsonp = require("jsonp");
       jsonp(
@@ -166,6 +167,7 @@ export default {
         }
       );
     },
+    // 获取空气检测信息
     getAirInfo() {
       const jsonp = require("jsonp");
       jsonp(
@@ -207,6 +209,7 @@ export default {
         }
       );
     },
+    // 获取最新更新时间
     getUpdateTime() {
       let date = new Date();
       let hour = date.getHours();
@@ -215,6 +218,7 @@ export default {
       minute = minute < 10 ? "0" + minute : minute;
       this.updateTime = hour + ":" + minute;
     },
+    // 获取水质信息
     getWaterInfo() {
       let date = new Date();
       let hour = date.getHours();
@@ -224,18 +228,20 @@ export default {
         xData.push(i);
         data.push(Math.floor(Math.random() * 30));
       }
-      this.echarts = {
-        id: "echarts2",
-        title: "",
-        legendShow: false,
-        legendData: ["水质分析"],
-        color: [this.mainfont],
-        areaColor: true,
-        smooth: true,
-        xData,
-        yName: "(mg/L)",
-        data: [data]
-      };
+      setTimeout(() => {
+        this.echarts = {
+          id: "echarts2",
+          title: "",
+          legendShow: false,
+          legendData: ["水质分析"],
+          color: [this.mainfont],
+          areaColor: true,
+          smooth: true,
+          xData,
+          yName: "(mg/L)",
+          data: [data]
+        };
+      }, 100);
       this.waterList = [
         {
           title: "水温",
@@ -283,9 +289,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "~@/assets/css/common.styl"
+@import '~@/assets/css/common.styl'
 .common-page-main
-  //position: relative
+  // position: relative
   .weather-wrapper
     width: 100%
     height: 30%
@@ -321,9 +327,9 @@ export default {
           font-size: 1.2rem
           color: $white
   .other-wrapper
-    //position: absolute
-    //top: 18vh
-    //left: 0
+    // position: absolute
+    // top: 18vh
+    // left: 0
     width: 100%
     height: 77.5%
     transform: translateY(-10%)
@@ -346,7 +352,7 @@ export default {
           .pm25-left
             .pm25-num
               font-size: 5rem
-              //color: $green
+              // color: $green
             .pm25-unit
               font-size: 1.2rem
           .pm25-right
@@ -360,6 +366,7 @@ export default {
               margin-top: 0.5vh
               font-size: 0.6rem
               text-align: center
+              color: $white
               &:nth-child(1)
                 background: $green
               &:nth-child(2)
@@ -376,7 +383,7 @@ export default {
             height: 8vh
             display: flex
             flex-direction: column
-            justify-content: space-around
+            justify-content: center
             align-items: flex-start
             .gas-item-title
               font-size: 1rem
@@ -396,8 +403,11 @@ export default {
         flex-direction: column
         .common-echarts-box
           height: 25vh
-        .water-list
+          max-height: 25vh
           flex: auto
+        .water-list
+          height: 8vh
+          flex: 0 0 8vh
           display: flex
           justify-content: space-around
           align-items: center

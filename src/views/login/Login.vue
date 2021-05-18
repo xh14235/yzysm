@@ -57,7 +57,7 @@ export default {
     login() {
       login({
         username: this.username,
-        password: this.$getRsaCode(this.password)
+        password: this.$getRsaCode(this.password) // 密码rsa加密
       }).then(data => {
         // let data = res.data;
         if (data.code === 200) {
@@ -79,23 +79,20 @@ export default {
 .login-wrapper
   width: 100%
   height: 100%
-  background-image: url("../../assets/img/login-bg.jpg")
+  background-image: url('../../assets/img/login-bg.jpg')
   background-size: 100% 100%
   position: relative
   padding-top: 10.5vh
-
   .login-logo
     display: block
     width: 16vw
     margin: 0 auto
-
   .login-logo-title
     text-align: center
     margin-top: 2vh
     font-size: 1.8rem
     color: #fff
     font-weight: 600
-
   .login-bottom
     width: 100%
     text-align: center
@@ -104,7 +101,6 @@ export default {
     bottom: 5vh
     font-size: 1.4rem
     color: #94A5BB
-
   .login-box
     width: 87vw
     height: 50vh
@@ -112,19 +108,16 @@ export default {
     background: #fff
     border-radius: 0.5rem
     padding: 4.6vh 5vw 8vh 5vw
-    display flex
-    flex-direction column
-    justify-content space-between
-
+    display: flex
+    flex-direction: column
+    justify-content: space-between
     .login-box-title
       font-size: 2.4rem
       color: #3E4A59
-
     .login-input
       width: 100%
       height: 7.5vh
       position: relative
-
       input
         width: 100%
         height: 7.5vh
@@ -134,17 +127,14 @@ export default {
         font-size: 1.5rem
         border: 0
         border-bottom: 1px solid #E9EEF5
-
         &::-webkit-input-placeholder
           color: #94A5BB
-
       .login-icon
         width: 5.3vw
         height: 3vh
         position: absolute
         left: 6vw
         top: 2.25vh
-
     .van-button
       height: 6.4vh
       background-image: linear-gradient(to right, #44EEE0, #26D4DC)

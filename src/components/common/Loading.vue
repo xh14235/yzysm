@@ -5,6 +5,7 @@
 </template>
 
 <script>
+// loading功能，如地图加载完loading为true，目前为定时器3s
 export default {
   name: "Loading"
 };
@@ -14,7 +15,7 @@ export default {
 .loading-wrapper
   width: 100%
   height: 100%
-  background: rgba(0,0,0,.5)
+  background: rgba(0, 0, 0, 0.5)
   position: fixed
   top: 0
   left: 0

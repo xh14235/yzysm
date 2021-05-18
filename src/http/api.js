@@ -29,6 +29,10 @@ export const getConsumerAllEnergyNum = params =>
 export const getConsumerEnergyNum = params =>
   get("energy/api/consumer/building/getEnergyType", params);
 
+// 获取每层楼能源种类数据 冷热水电
+export const getSingleConsumerEnergyNum = params =>
+  get("energy/api/consumer/floor/getEnergyType", params);
+
 // 能源分析板块
 // 获取节省金额
 export const getSavings = params =>
@@ -36,7 +40,7 @@ export const getSavings = params =>
 
 // 节能趋势
 export const getEnergySavingTrend = params =>
-  get("energy/api/consumer/date/allType/saveEnergy", params);
+  get("energy/api/consumer/date/saveEnergy", params);
 
 // 耗能对比
 export const getEnergyComparison = params =>

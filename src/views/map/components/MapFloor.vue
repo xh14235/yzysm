@@ -18,6 +18,7 @@
 </template>
 
 <script>
+// 该组件暂时没用，显示的是楼层icon
 import { mapMutations } from "vuex";
 export default {
   name: "MapFloor",

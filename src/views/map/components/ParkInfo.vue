@@ -87,12 +87,13 @@ export default {
     flex-wrap: wrap
     justify-content: space-between
     .park-info-item
-      flex: 0 0 33%
-      width: 33%
+      flex: 0 0 33.3333%
+      width: 33.3333%
       display: flex
       align-items: center
+      justify-content: space-around
       .park-info-icon
-        width: 1.5rem
+        width: 1rem
       .park-info-detail
         .park-info-title
           font-size: 1rem

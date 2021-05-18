@@ -16,6 +16,7 @@
 </template>
 
 <script>
+// 点击地图上魔方时显示该组件，显示魔方信息
 export default {
   name: "MapCube",
   data() {
@@ -51,7 +52,7 @@ export default {
 .cube-wrapper
   width: 91.2vw
   height: 18vh
-  background: rgba(0,0,0,.3)
+  background: rgba(0, 0, 0, 0.15)
   border-radius: 1rem
   position: absolute
   top: 1vh

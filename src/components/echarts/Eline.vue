@@ -38,7 +38,7 @@ export default {
               },
               {
                 offset: 1,
-                color: "transparent"
+                color: "rgba(255, 255, 255, 0)"
               }
             ])
           };
@@ -75,7 +75,7 @@ export default {
             color: "#757575",
             fontSize: font1,
             align: "right",
-            verticalAlign: "top"
+            verticalAlign: "middle"
           },
           axisLabel: {
             show: true,

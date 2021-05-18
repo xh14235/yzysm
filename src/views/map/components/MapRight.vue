@@ -17,6 +17,7 @@
 </template>
 
 <script>
+// 地图右下角按钮icon，功能分别为显示地图标点、演示报警功能、显示能源管道、显示行走路线（此功能暂没实现）
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "MapRight",
@@ -25,25 +26,25 @@ export default {
       list: [
         {
           title: "图标",
-          active: Number(sessionStorage.getItem("taggingShow")) || 0,
+          active: false,
           icon1: require("@/assets/img/map-right-icon11.png"),
           icon2: require("@/assets/img/map-right-icon12.png")
         },
         {
           title: "报警",
-          active: Number(sessionStorage.getItem("alarmShow")) || 0,
+          active: false,
           icon1: require("@/assets/img/map-right-icon21.png"),
           icon2: require("@/assets/img/map-right-icon22.png")
         },
         {
           title: "路线",
-          active: Number(sessionStorage.getItem("pipingShow")) || 0,
+          active: false,
           icon1: require("@/assets/img/map-right-icon31.png"),
           icon2: require("@/assets/img/map-right-icon32.png")
         },
         {
           title: "行走",
-          active: Number(sessionStorage.getItem("walkShow")) || 0,
+          active: false,
           icon1: require("@/assets/img/map-right-icon41.png"),
           icon2: require("@/assets/img/map-right-icon42.png")
         }
@@ -92,7 +93,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "~@/assets/css/common.styl"
+@import '~@/assets/css/common.styl'
 .map-right-wrapper
   position: absolute
   right: 4.4vw

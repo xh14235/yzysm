@@ -8,6 +8,7 @@
 </template>
 
 <script>
+// 该组件暂时没用，显示的魔方选择按钮
 import { mapMutations } from "vuex";
 export default {
   name: "MapCubeIcon",

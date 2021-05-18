@@ -36,29 +36,32 @@ export default new Vuex.Store({
     isSafari: localStorage.getItem("isSafari")
   },
   mutations: {
+    // 改变页面tab
     changeMapTab(state, index) {
       state.mapTab = index;
       sessionStorage.setItem("mapTab", index);
     },
-    changeMapIconHeight(state, height) {
-      state.mapIconHeight = height;
-    },
+    // changeMapIconHeight(state, height) {
+    //   state.mapIconHeight = height;
+    // },
+    // 登录
     mutLogin(state, token) {
       state.token = token;
     },
-    mutWeather(state, weather) {
-      state.pm25 = weather.pm25;
-      state.humidity = weather.humidity;
-      state.pressure = weather.pressure;
-      state.tem = weather.tem;
-      state.weather = weather.weather;
-    },
-    mutSupplyData(state, data) {
-      state.supplyData = data;
-    },
-    mutConsumeData(state, data) {
-      state.consumeData = data;
-    }
+    // 获取天气信息
+    // mutWeather(state, weather) {
+    //   state.pm25 = weather.pm25;
+    //   state.humidity = weather.humidity;
+    //   state.pressure = weather.pressure;
+    //   state.tem = weather.tem;
+    //   state.weather = weather.weather;
+    // },
+    // mutSupplyData(state, data) {
+    //   state.supplyData = data;
+    // },
+    // mutConsumeData(state, data) {
+    //   state.consumeData = data;
+    // }
   },
   actions: {},
   modules: {

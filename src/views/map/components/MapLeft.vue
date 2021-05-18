@@ -16,6 +16,7 @@
 </template>
 
 <script>
+// 地图左下角的按钮icon，分别为定位到原点及全屏显示地图，但功能没实现
 export default {
   name: "MapLeft",
   methods: {

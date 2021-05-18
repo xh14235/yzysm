@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import router from "@/router";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "Tabbar",
@@ -49,14 +48,15 @@ export default {
   computed: {
     ...mapState(["mapTab"])
   },
+  watch: {
+    mapTab() {
+      this.$router.push(this.$router.options.routes[this.mapTab + 1].path);
+    }
+  },
   methods: {
     ...mapMutations(["changeMapTab"]),
     changeTab(index) {
       this.changeMapTab(index);
-      const rt = router.options.routes;
-      if (this.$route.path !== rt[index + 1].path) {
-        this.$router.push(rt[index + 1].path);
-      }
     }
   }
 };

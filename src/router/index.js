@@ -4,6 +4,11 @@ import store from "../store";
 
 Vue.use(Router);
 
+const original = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return original.call(this, location).catch(err => err);
+};
+
 const routes = [
   {
     path: "/",
